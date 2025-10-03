@@ -1,0 +1,7 @@
+{
+  "AssembliesPath": "bin/Debug/net8.0",
+  "OutputPath": "bin/rewritten",
+  "Assemblies": [
+    "CoyoteApp.dll"
+  ]
+}
