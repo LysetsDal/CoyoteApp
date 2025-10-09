@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using Xunit;
 
 namespace CoyoteApp.IndustrialStrength;
@@ -11,7 +12,7 @@ public class IndustrialStrengthTest
         Task t1 = SendMessageHelper("a");
         Task t2 = SendMessageHelper("b");
         await Task.WhenAll(t1, t2);
-        Assert.True(list.Count == 100); // holds 
+        Assert.Equal(100, list.Count); // holds 
     }
 
     private Task SendMessageHelper(string prefix)
