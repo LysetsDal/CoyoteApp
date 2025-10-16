@@ -1,13 +1,66 @@
 using System.Runtime.Versioning;
 using Microsoft.Coyote.SystematicTesting;
+using Microsoft.Coyote.SystematicTesting.Frameworks.XUnit;
+using Microsoft.VisualStudio.TestPlatform.CrossPlatEngine;
 using Xunit;
+using Xunit.Abstractions;
+using Xunit.Sdk;
 
 namespace CoyoteApp.Tests;
 
 
 public class UnsafePublicationTest
 {
+    private readonly ITestOutputHelper _output = new TestOutputHelper();
 
+    /// <summary>
+    /// Synchronous Unit test for <see cref="UnsafeInheritance"/>
+    /// </summary>
+    [Fact (DisplayName = "Test_UnsafePub_Inheritance")]
+    public async Task Test_UnsafePub_Inheritance()
+    {
+        var logger = new TestOutputLogger(_output);
+        
+        var t1 = Task.Run(() => new UnsafeInheritanceChild());
+        await Task.WhenAll(t1);
+
+        var result = t1.Result;
+        logger.WriteLine("Res: " + result.ObservedMessage); 
+        
+        Assert.NotNull(result.ObservedMessage);
+    }
+    
+    /// <summary>
+    /// Synchronous repetaed Unit test for <see cref="UnsafeInheritance"/>
+    /// </summary>
+    [Fact (DisplayName = "Test_UnsafePub_Inheritance_X")]
+    public async Task Test_UnsafePub_Inheritance_X()
+    {
+        const int ITERATIONS = 10_000;
+        var output = new TestOutputLogger(_output);
+        for (var i = 0; i < ITERATIONS; i++)
+        {
+            await Test_UnsafePub_Inheritance();
+            output.WriteLine("Iteration: " + i);
+        }
+    }
+
+    /// <summary>
+    /// Concurrent Coyote test for <see cref="UnsafeInheritance"/>, run with default Configuration.
+    /// </summary>
+    [Fact]
+    public async Task CoyoteTest_UnsafePub_Inheritance()
+    {
+        var conf = Utils.GetDefaultConfiguration_10000();
+        var forrest = TestingEngine.Create(conf, Test_UnsafePub_Inheritance);
+        forrest.Run(); // Run Forrest, Run!
+
+        var reportText = forrest.TestReport.GetText(conf, "[UNSAFE_PUB] ");
+        
+        Assert.True(forrest.TestReport.NumOfFoundBugs == 0, reportText);
+    }
+        
+        
     [Test]
     [Fact]
     public static async Task Test_UnsafePublication_V1()

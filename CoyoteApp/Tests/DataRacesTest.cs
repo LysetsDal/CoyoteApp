@@ -12,9 +12,9 @@ public class DataRacesTest
     private readonly ITestOutputHelper _output = new TestOutputHelper();
     
     /// <summary>
-    /// Synchronous Unit test for Turnstile.
+    /// Synchronous Unit test for <see cref="Turnstile"/>.
     /// </summary>
-    [Fact]
+    [Fact(DisplayName = "Test_DataRace_Turnstile")]
     public async Task Test_DataRace_Turnstile()
     {
         const int DELAY = 100;
@@ -29,12 +29,12 @@ public class DataRacesTest
     }
     
     /// <summary>
-    /// Concurrent Coyote test for Turnstile, run with default Configuration. 
+    /// Concurrent Coyote test for <see cref="Turnstile"/>, run with default Configuration. 
     /// </summary>
-    [Fact]
+    [Fact(DisplayName = "CoyoteTest_DataRace_Turnstile")]
     public async Task CoyoteTest_DataRace_Turnstile()
     {
-        var conf = Utils.GetConfigurationWithIterations_1000();
+        var conf = Utils.GetDefaultConfiguration_1000();
         var engine = TestingEngine.Create(conf, Test_DataRace_Turnstile);
         engine.Run();
         
@@ -44,9 +44,9 @@ public class DataRacesTest
     }
     
     /// <summary>
-    /// Synchronous Unit test for InitializationRace.
+    /// Synchronous Unit test for <see cref="InitializationRace"/>.
     /// </summary>
-    [Fact]
+    [Fact(DisplayName = "Test_DataRace_InitializationRace")]
     public async Task Test_DataRace_InitializationRace()
     {
         TestOutputLogger output = new TestOutputLogger(_output);
@@ -66,9 +66,9 @@ public class DataRacesTest
     }
     
     /// <summary>
-    /// Concurrent Coyote test for InitializationRace, run with default Configuration. 
+    /// Concurrent Coyote test for <see cref="InitializationRace"/>, run with default Configuration. 
     /// </summary>
-    [Fact]
+    [Fact(DisplayName = "CoyoteTest_DataRace_InitializationRace")]
     public async Task CoyoteTest_DataRace_InitializationRace()
     {
         var conf = Utils.GetDefaultConfiguration();
