@@ -17,12 +17,11 @@ public class UnsafeInheritance
     }
 }
 
-public class UnsafeInheritanceChild : UnsafeInheritance
+public class UnsafeInheritanceDerived : UnsafeInheritance
 {
     private readonly string message = "If you see this: SafePublication";
-    
     public string? ObservedMessage { get; private set; }
-    
+
     protected override void Initialize()
     {
         ObservedMessage = message;

@@ -15,10 +15,12 @@ public static class Utils
     public static Configuration GetDefaultConfiguration()
     {
         return Configuration.Create()
-            .WithMaxSchedulingSteps(100_000)         // Max scheduling steps (i.e. decisions) to be explored during testing.
-            .WithMemoryAccessRaceCheckingEnabled()  // Enable exploration of race conditions at memory-access locations.
-            .WithPrioritizationStrategy()           // A (fair) probabilistic priority-based exploration strategy. 
-            .WithActorTraceVisualizationEnabled();
+                .WithConsoleLoggingEnabled()            // Show Iteration prints
+                // .WithVerbosityEnabled()              // Debug All Interleaving traces   
+                .WithMaxSchedulingSteps(10_000)         // Max scheduling steps (i.e. decisions) to be explored during testing.
+                .WithMemoryAccessRaceCheckingEnabled()  // Enable exploration of race conditions at memory-access locations.
+                .WithPrioritizationStrategy()           // A (fair) probabilistic priority-based exploration strategy. 
+                .WithActorTraceVisualizationEnabled();
     }
     
     /// <summary>
@@ -51,5 +53,10 @@ public static class Utils
             .WithTestingIterations(10_000);
     }
     
-    
+    public static Configuration GetDefaultConfiguration_NoDeadlocks()
+    {
+        return GetDefaultConfiguration_10000()
+            .WithPotentialDeadlocksReportedAsBugs(false)
+            .WithDeadlockTimeout(10_000);
+    }
 }

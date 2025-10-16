@@ -1,11 +1,12 @@
-using Microsoft.Coyote;
+using CoyoteApp;
+using CoyoteApp.DataRaces;
 using Microsoft.Coyote.SystematicTesting;
 using Microsoft.Coyote.SystematicTesting.Frameworks.XUnit;
 using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace CoyoteApp.DataRaces;
+namespace Tests;
 
 public class DataRacesTest
 {
