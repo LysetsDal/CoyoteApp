@@ -23,6 +23,7 @@
 
     <ItemGroup>
       <Folder Include="coyote_reports\" />
+      <Folder Include="src\TypesCleary\" />
     </ItemGroup>
 
 </Project>
