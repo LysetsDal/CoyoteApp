@@ -13,7 +13,7 @@ public class UnsafePublicationChild : IAsyncType
     }
     private async Task InitializeAsync()
     {
-        await Task.Delay(100);
+        await Task.Delay(500);
         this.name = "Initialized Async";
     }
 
