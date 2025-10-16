@@ -4,20 +4,23 @@ namespace CoyoteApp.IndustrialStrength;
 
 public class Concatenator
 {
-    public List<string> list = new ();
+    public List<string> _list;
+
+    public Concatenator(List<string> list)
+    {
+        _list = list;
+    }
     
     
-    public Task<int> SendMessageHelper(string prefix)
+    public Task SendMessageHelper(string prefix)
     {
         return Task.Run(async () =>
         {
             for (int i = 0; i < 50; i++)
             {
-                list.Add(string.Concat(prefix, i));
+                _list.Add(string.Concat(prefix, i));
                 await Task.Yield();
             }
-
-            return list.Count;
         });
     }
     

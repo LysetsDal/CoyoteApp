@@ -6,8 +6,11 @@ namespace CoyoteApp.DataRaces;
 
 public class DataRacesTest
 {
+    /// <summary>
+    /// Synchronous Unit test.
+    /// </summary>
     [Fact]
-    public static async Task Test_DataRace_Turnstile()
+    public async Task Test_DataRace_Turnstile()
     {
         const int DELAY = 100;
         var turnstile = new Turnstile();
@@ -20,8 +23,11 @@ public class DataRacesTest
         Assert.Equal(2, turnstile.count);
     }
     
+    /// <summary>
+    /// Concurrent Coyote test run with default Configuration. 
+    /// </summary>
     [Fact]
-    public async Task CoyoteTest_UnsafePublication()
+    public async Task CoyoteTest_DataRace_Turnstile()
     {
         var conf = Utils.GetDefaultConfiguration();
         var engine = TestingEngine.Create(conf, Test_DataRace_Turnstile);

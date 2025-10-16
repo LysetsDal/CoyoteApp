@@ -9,19 +9,25 @@ namespace CoyoteApp.IndustrialStrength;
 
 public class IndustrialStrengthTest
 {
-    
-    
+    /// <summary>
+    /// Synchronous Unit test.
+    /// </summary>
     [Fact]
-    public static async Task Test_Concatenator()
+    public async Task Test_Concatenator()
     {
-        Concatenator concatenator = new();
+        var list = new List<string>();
+        Concatenator concatenator = new Concatenator(list);
         Task t1 = concatenator.SendMessageHelper("a");
         Task t2 = concatenator.SendMessageHelper("b");
         await Task.WhenAll(t1, t2);
         
-        Assert.Equal(100, concatenator.list.Count); // holds 
+        
+        Assert.Equal(100, concatenator._list.Count); // holds 
     }
     
+    /// <summary>
+    /// Concurrent Coyote test run with default Configuration see <see cref="Utils"/>. 
+    /// </summary>
     [Fact]
     public async Task CoyoteTest_UnsafePublication()
     {
@@ -32,7 +38,5 @@ public class IndustrialStrengthTest
             
         Assert.True(engine.TestReport.NumOfFoundBugs == 0, reportText);
     }
-    
-    
     
 }
