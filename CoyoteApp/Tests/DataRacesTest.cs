@@ -9,7 +9,7 @@ namespace CoyoteApp.DataRaces;
 
 public class DataRacesTest
 {
-    private ITestOutputHelper _output = new TestOutputHelper();
+    private readonly ITestOutputHelper _output = new TestOutputHelper();
     
     /// <summary>
     /// Synchronous Unit test for Turnstile.
@@ -34,7 +34,7 @@ public class DataRacesTest
     [Fact]
     public async Task CoyoteTest_DataRace_Turnstile()
     {
-        var conf = Utils.GetDefaultConfiguration();
+        var conf = Utils.GetConfigurationWithIterations_1000();
         var engine = TestingEngine.Create(conf, Test_DataRace_Turnstile);
         engine.Run();
         
@@ -54,7 +54,7 @@ public class DataRacesTest
         var t1 = Task.Run(InitializationRace.getInstance);
         var t2 = Task.Run(InitializationRace.getInstance);
 
-        Task.WhenAll(t1, t2);
+        await Task.WhenAll(t1, t2);
 
         var instance1 = t1.Result.hashcode;
         var instance2 = t2.Result.hashcode;
