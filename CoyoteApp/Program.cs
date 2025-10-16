@@ -13,11 +13,17 @@ namespace CoyoteApp
 {
     public class Program
     {
-        public readonly TestOutputHelper output;
-        
+        private readonly ITestOutputHelper _output;
+
+        public Program(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
         public static async Task Main(string[] args)
         {
-            Program p = new Program();
+            TestOutputHelper output = new TestOutputHelper();
+            Program p = new Program(output);
             if (args.Length == 0)
             {
                 PrintUsage();
@@ -64,39 +70,34 @@ namespace CoyoteApp
         [Fact]
         public async Task Test_UnsafePublication()
         {
-            // Construct the object
-            EscapingInstance escapingInstance;
-
             // Call the objects method 
-            var t1 = Task.Run(() =>
-            {
-                return EscapingInstance.getInstance();
-            });
+            var t1 = Task.Run(EscapingInstance.getInstance);
+            var t2 = Task.Run(EscapingInstance.getInstance);
             
-            var t2 = Task.Run(() =>
-            {
-                return EscapingInstance.getInstance();
-            });
+            await Task.WhenAll(t1, t2);
 
-            Task.WhenAll(t1, t2);
-
+            var instance1 = t1.Result;
+            var instance2 = t2.Result;
+            
             // Assert
-            output.WriteLine("T1: " + t1.Result.x);
-            output.WriteLine("T2: " + t2.Result.x);
-            Assert.True(t1.Result.x != t2.Result.x);
+            
+            _output.WriteLine("T1: " + instance1.hashcode);
+            _output.WriteLine("T2: " + instance2.hashcode);
+            
+            Assert.NotSame(instance1, instance2);
         }
-
-        [Test]
+        
+        [Fact]
         public async Task CoyoteTest_UnsafePublication()
         {
-            var conf = Configuration.Create().WithTestingIterations(10);
+            var conf = Utils.GetDefaultConfiguration();
             var engine = TestingEngine.Create(conf, Test_UnsafePublication);
             engine.Run();
+            
+            var reportText = engine.TestReport.GetText(conf, "@SAFE-PUBLICATION: "); ;
+            
+            Assert.True(engine.TestReport.NumOfFoundBugs == 0, reportText);
         }
         
-
-
-        
-
     }
 }

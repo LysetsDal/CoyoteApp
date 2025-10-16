@@ -1,29 +1,38 @@
 using System.Collections.Concurrent;
+using Microsoft.Coyote;
+using Microsoft.Coyote.SystematicTesting;
 using Xunit;
+using Xunit.Abstractions;
+using Xunit.Sdk;
 
 namespace CoyoteApp.IndustrialStrength;
 
 public class IndustrialStrengthTest
 {
-    private List<string> list = new ();
     
-    public async Task RunTest()
+    
+    [Fact]
+    public static async Task Test_Concatenator()
     {
-        Task t1 = SendMessageHelper("a");
-        Task t2 = SendMessageHelper("b");
+        Concatenator concatenator = new();
+        Task t1 = concatenator.SendMessageHelper("a");
+        Task t2 = concatenator.SendMessageHelper("b");
         await Task.WhenAll(t1, t2);
-        Assert.Equal(100, list.Count); // holds 
+        
+        Assert.Equal(100, concatenator.list.Count); // holds 
     }
-
-    private Task SendMessageHelper(string prefix)
+    
+    [Fact]
+    public async Task CoyoteTest_UnsafePublication()
     {
-        return Task.Run(async () =>
-        {
-            for (int i = 0; i < 50; i++)
-            {
-                list.Add(string.Concat(prefix, i));
-                await Task.Yield();
-            }
-        });
+        var conf = Utils.GetDefaultConfiguration();
+        var engine = TestingEngine.Create(conf, Test_Concatenator);
+        engine.Run();
+        var reportText = engine.TestReport.GetText(conf, "[CONCAT] "); ;
+            
+        Assert.True(engine.TestReport.NumOfFoundBugs == 0, reportText);
     }
+    
+    
+    
 }

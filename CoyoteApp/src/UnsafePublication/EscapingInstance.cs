@@ -2,15 +2,17 @@ namespace CoyoteApp;
 
 public class EscapingInstance
 {
-    private static EscapingInstance instance;
-
-    public int x { get; set;  }
+    private static volatile EscapingInstance instance;
+    private static readonly object rl = new();
+    
+    public int hashcode { get; set;  }
     
     private EscapingInstance()
     {
+        Thread.Sleep(500);
         // Initialize me daddy...
-        var rand = new Random(42069);
-        x = rand.Next();
+        
+        hashcode = GetHashCode();
     }
 
     public static EscapingInstance getInstance()
@@ -18,7 +20,6 @@ public class EscapingInstance
         if (instance == null)
         {
             instance = new EscapingInstance();
-            
         }
 
         return instance;
