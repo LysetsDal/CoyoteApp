@@ -28,7 +28,7 @@ public class DataRacesTest
         
         Assert.Equal(2, turnstile.count);
     }
-    
+
     /// <summary>
     /// Concurrent Coyote test for <see cref="Turnstile"/>, run with default Configuration. 
     /// </summary>
