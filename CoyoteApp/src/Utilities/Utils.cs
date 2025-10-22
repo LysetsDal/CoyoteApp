@@ -15,17 +15,19 @@ public static class Utils
     public static Configuration GetDefaultConfiguration()
     {
         return Configuration.Create()
-            .WithMaxSchedulingSteps(100_000)         // Max scheduling steps (i.e. decisions) to be explored during testing.
-            .WithMemoryAccessRaceCheckingEnabled()  // Enable exploration of race conditions at memory-access locations.
-            .WithPrioritizationStrategy()           // A (fair) probabilistic priority-based exploration strategy. 
-            .WithActorTraceVisualizationEnabled();
+                .WithConsoleLoggingEnabled()            // Show Iteration prints
+                // .WithVerbosityEnabled()              // Debug All Interleaving traces   
+                .WithMaxSchedulingSteps(10_000)         // Max scheduling steps (i.e. decisions) to be explored during testing.
+                .WithMemoryAccessRaceCheckingEnabled()  // Enable exploration of race conditions at memory-access locations.
+                .WithPrioritizationStrategy()           // A (fair) probabilistic priority-based exploration strategy. 
+                .WithActorTraceVisualizationEnabled();
     }
     
     /// <summary>
     /// Default test configuration with 100 iterations.
     /// </summary>
     /// <returns> The default test configuration, run 100 times </returns>
-    public static Configuration GetConfigurationWithIterations_100()
+    public static Configuration GetDefaultConfiguration_100()
     {
         return GetDefaultConfiguration()
             .WithTestingIterations(100);
@@ -35,7 +37,7 @@ public static class Utils
     /// Default test configuration with 1000 iterations.
     /// </summary>
     /// <returns> The default test configuration, run 1000 times </returns>
-    public static Configuration GetConfigurationWithIterations_1000()
+    public static Configuration GetDefaultConfiguration_1000()
     {
         return GetDefaultConfiguration()
             .WithTestingIterations(1_000);
@@ -45,11 +47,16 @@ public static class Utils
     /// Default test configuration with 10000 iterations.
     /// </summary>
     /// <returns> The default test configuration, run 10000 times </returns>
-    public static Configuration GetConfigurationWithIterations_10000()
+    public static Configuration GetDefaultConfiguration_10000()
     {
         return GetDefaultConfiguration()
             .WithTestingIterations(10_000);
     }
     
-    
+    public static Configuration GetDefaultConfiguration_NoDeadlocks()
+    {
+        return GetDefaultConfiguration_10000()
+            .WithPotentialDeadlocksReportedAsBugs(false)
+            .WithDeadlockTimeout(10_000);
+    }
 }

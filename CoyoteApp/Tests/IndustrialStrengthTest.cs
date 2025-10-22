@@ -12,7 +12,7 @@ public class IndustrialStrengthTest
     /// <summary>
     /// Synchronous Unit test.
     /// </summary>
-    [Fact]
+    [Fact(DisplayName = "Test_Concatenator")]
     public async Task Test_Concatenator()
     {
         var list = new List<string>();
@@ -28,7 +28,7 @@ public class IndustrialStrengthTest
     /// <summary>
     /// Concurrent Coyote test run with default Configuration see <see cref="Utils"/>. 
     /// </summary>
-    [Fact]
+    [Fact(DisplayName = "CoyoteTest_UnsafePublication")]
     public async Task CoyoteTest_UnsafePublication()
     {
         var conf = Utils.GetDefaultConfiguration();
