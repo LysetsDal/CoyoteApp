@@ -2,8 +2,6 @@ namespace CoyoteApp;
 
 public class UnsafeInheritance
 {
-    // public static UnsafeInheritance? SharedInstance;
-    
     public UnsafeInheritance()
     {
         // SharedInstance = this;
@@ -11,19 +9,27 @@ public class UnsafeInheritance
     }
 
     
-    protected virtual void Initialize()
+    public virtual void Initialize()
     {
         // overridden by child class 
+        Console.WriteLine("Base.Initialize");
     }
 }
 
 public class UnsafeInheritanceDerived : UnsafeInheritance
 {
     private readonly string message = "If you see this: SafePublication";
-    public string? ObservedMessage { get; private set; }
+    public List<string> ObservedMessage;
 
-    protected override void Initialize()
+    public UnsafeInheritanceDerived() : base()
     {
-        ObservedMessage = message;
+        Console.WriteLine("Derived constructor running, message = " + message);
+        ObservedMessage = new List<string>();
+    }
+    
+    public override void Initialize()
+    {
+        Console.WriteLine("Derived.Initialize called, message = " + message);
+        ObservedMessage.Add(message);
     }
 }

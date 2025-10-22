@@ -19,16 +19,20 @@ public class UnsafePublicationTest
     [Fact(DisplayName = "Test_UnsafePub_Inheritance")]
     public async Task Test_UnsafePub_Inheritance()
     {
-        var logger = new TestOutputLogger(_output);
+        var output = new TestOutputLogger(_output);
 
-        var t1 = Task.Run(() => new UnsafeInheritanceDerived());
+        var t1 = Task.Run(() =>
+        {
+            var usi = new UnsafeInheritanceDerived();
+            output.WriteLine("Final ObservedMessage: " + usi.ObservedMessage);
+            return usi;
+        });
 
         await Task.WhenAll(t1);
 
         var result = t1.Result;
-        // logger.WriteLine("Res: " + result.ObservedMessage); 
         
-        Assert.NotNull(result.ObservedMessage);
+        Assert.NotNull(result.ObservedMessage.First());
     }
     
     /// <summary>
@@ -53,7 +57,7 @@ public class UnsafePublicationTest
     [Fact(DisplayName = "CoyoteTest_UnsafePub_Inheritance")]
     public async Task CoyoteTest_UnsafePub_Inheritance()
     {
-        var conf = Utils.GetDefaultConfiguration_NoDeadlocks();
+        var conf = Utils.GetDefaultConfiguration_10000();
         var engine = TestingEngine.Create(conf, Test_UnsafePub_Inheritance);
         engine.Run();
 
