@@ -3,4 +3,5 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+**/coyote_reports/*
 **/coyote_test_cli.txt
