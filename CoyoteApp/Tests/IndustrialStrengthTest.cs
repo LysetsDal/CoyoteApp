@@ -26,12 +26,12 @@ public class IndustrialStrengthTest
     }
     
     /// <summary>
-    /// Concurrent Coyote test run with default Configuration see <see cref="Utils"/>. 
+    /// Concurrent Coyote test run with default Configuration see <see cref="ConfigurationFactory"/>. 
     /// </summary>
     [Fact(DisplayName = "CoyoteTest_UnsafePublication")]
     public async Task CoyoteTest_UnsafePublication()
     {
-        var conf = Utils.GetDefaultConfiguration();
+        var conf = ConfigurationFactory.GetDefaultConfiguration();
         var engine = TestingEngine.Create(conf, Test_Concatenator);
         engine.Run();
         var reportText = engine.TestReport.GetText(conf, "[CONCAT] "); ;

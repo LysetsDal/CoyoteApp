@@ -35,7 +35,7 @@ public class DataRacesTest
     [Fact(DisplayName = "CoyoteTest_DataRace_Turnstile")]
     public async Task CoyoteTest_DataRace_Turnstile()
     {
-        var conf = Utils.GetDefaultConfiguration_1000();
+        var conf = ConfigurationFactory.GetDefaultConfiguration_1000();
         var engine = TestingEngine.Create(conf, Test_DataRace_Turnstile);
         engine.Run();
         
@@ -72,7 +72,7 @@ public class DataRacesTest
     [Fact(DisplayName = "CoyoteTest_DataRace_InitializationRace")]
     public async Task CoyoteTest_DataRace_InitializationRace()
     {
-        var conf = Utils.GetDefaultConfiguration();
+        var conf = ConfigurationFactory.GetDefaultConfiguration();
         var engine = TestingEngine.Create(conf, Test_DataRace_InitializationRace);
         engine.Run();
         

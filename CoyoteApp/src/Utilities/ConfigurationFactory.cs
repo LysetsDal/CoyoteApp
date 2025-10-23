@@ -5,7 +5,7 @@ using Xunit;
 
 namespace CoyoteApp;
 
-public static class Utils
+public static class ConfigurationFactory
 {
     /// <summary>
     /// Default test configuration. It has a max cap of 100_000 scheduling steps. Exploration of
