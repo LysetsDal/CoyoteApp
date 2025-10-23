@@ -1,9 +1,5 @@
-using System.Collections.Concurrent;
-using Microsoft.Coyote;
 using Microsoft.Coyote.SystematicTesting;
 using Xunit;
-using Xunit.Abstractions;
-using Xunit.Sdk;
 
 namespace CoyoteApp.IndustrialStrength;
 

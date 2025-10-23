@@ -1,10 +1,7 @@
 using CoyoteApp;
-using Microsoft.Coyote;
 using Microsoft.Coyote.SystematicTesting;
-using Microsoft.Coyote.SystematicTesting.Frameworks.XUnit;
 using Xunit;
 using Xunit.Abstractions;
-using Xunit.Sdk;
 
 namespace Tests;
 

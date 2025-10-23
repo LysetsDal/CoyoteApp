@@ -1,7 +1,4 @@
-using System.Runtime.InteropServices.JavaScript;
 using Microsoft.Coyote;
-using Microsoft.Coyote.SystematicTesting;
-using Xunit;
 
 namespace CoyoteApp;
 
