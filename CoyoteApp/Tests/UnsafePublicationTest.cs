@@ -6,7 +6,7 @@ using Xunit.Abstractions;
 namespace Tests;
 
 
-public class UnsafePublicationTest(ITestOutputHelper output)
+public class UnsafePublicationTest(ITestOutputHelper logger)
 {
     /// <summary>
     /// Synchronous Unit test for <see cref="UnsafeInheritance"/>
@@ -17,7 +17,7 @@ public class UnsafePublicationTest(ITestOutputHelper output)
         var t1 = Task.Run(() =>
         {
             var usi = new UnsafeInheritanceDerived();
-            output.WriteLine("Final ObservedMessage: " + usi.ObservedMessage);
+            logger.WriteLine("Final ObservedMessage: " + usi.ObservedMessage);
             return usi;
         });
 
@@ -38,7 +38,7 @@ public class UnsafePublicationTest(ITestOutputHelper output)
         for (var i = 0; i < ITERATIONS; i++)
         {
             await Test_UnsafePub_Inheritance();
-            output.WriteLine("Iteration: " + i);
+            logger.WriteLine("Iteration: " + i);
         }
     }
 
@@ -87,7 +87,7 @@ public class UnsafePublicationTest(ITestOutputHelper output)
         {
             while (data is null) {}
             observed = data.x; // could see 0 if constructor not visible
-            output.WriteLine("TR: " + observed);
+            logger.WriteLine("TR: " + observed);
             Assert.NotEqual(0, observed);
         });
 
@@ -120,7 +120,7 @@ public class UnsafePublicationTest(ITestOutputHelper output)
         {
             while (data is null) {}
             var read = data.x;
-            output.WriteLine("TR1: " + read);
+            logger.WriteLine("TR1: " + read);
             Assert.Equal(42, read);
             return read;
         });        
@@ -130,7 +130,7 @@ public class UnsafePublicationTest(ITestOutputHelper output)
             while (data is null) {}
 
             var read = data.x;
-            output.WriteLine("TR2: " + read);
+            logger.WriteLine("TR2: " + read);
             Assert.Equal(42, read);
             return read;
         });
@@ -152,7 +152,7 @@ public class UnsafePublicationTest(ITestOutputHelper output)
         for (var i = 0; i < ITERATIONS; i++)
         {
             await Test_UnsafePub_ThreadData();
-            output.WriteLine("Iteration: " + i);
+            logger.WriteLine("Iteration: " + i);
         }
     }
 
@@ -164,12 +164,10 @@ public class UnsafePublicationTest(ITestOutputHelper output)
     public async Task CoyoteTest_UnsafePub_ThreadData()
     {
         var conf = ConfigurationFactory.GetDefaultConfiguration_NoDeadlocks();
-        var engine = EngineFactory.GetDefaultTestEngine(conf, Test_UnsafePub_ThreadData_Reproducible, output);
+        var engine = EngineUtils.GetDefaultTestEngine(conf, Test_UnsafePub_ThreadData_Reproducible, logger);
+        EngineUtils.EmitTestRunReport(engine, logger);
 
         var reportText = engine.TestReport.GetText(conf, "[UNSAFE_PUB] ");
-        var report = engine.ReadableTrace;
-        
-        output.WriteLine(report);
         Assert.True(engine.TestReport.NumOfFoundBugs == 0, reportText);
     }
 }

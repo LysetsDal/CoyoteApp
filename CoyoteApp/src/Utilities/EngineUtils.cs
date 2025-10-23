@@ -5,22 +5,25 @@ using Xunit.Abstractions;
 
 namespace CoyoteApp;
 
-public static class EngineFactory
+public static class EngineUtils
 {
     // Initialize FileCount based on existing reports.
     private static int FileCount = InitializeFileCountFromExistingReports();
     private const string FILE_PREFIX = "Test_File_";
-
+    
     public static TestingEngine GetDefaultTestEngine(Configuration conf, Func<Task> targetFunction, ITestOutputHelper logger)
     {
         var engine = TestingEngine.Create(conf, targetFunction);
-
+        engine.Run();
+        
+        return engine;
+    }
+    
+    public static void EmitTestRunReport(TestingEngine engine, ITestOutputHelper logger)
+    {
         // --- Find or create the coyote_reports directory ---
         var reportDir = FindCoyoteReportsDirectory() ?? CreateFallbackReportsDirectory(logger);
-
-        // --- Run the engine ---
-        engine.Run();
-
+        
         // --- Emit reports safely ---
         var fileName = $"{FILE_PREFIX}{Interlocked.Increment(ref FileCount)}";
 
@@ -34,8 +37,9 @@ public static class EngineFactory
         {
             logger.WriteLine("No reports generated.");
         }
-
-        return engine;
+        
+        var report = engine.ReadableTrace;
+        logger.WriteLine(report);
     }
 
     /// <summary>
