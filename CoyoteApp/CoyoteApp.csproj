@@ -24,6 +24,7 @@
     <ItemGroup>
       <Folder Include="coyote_reports\" />
       <Folder Include="src\TypesCleary\" />
+      <Folder Include="Tests\Results\" />
     </ItemGroup>
 
 </Project>
